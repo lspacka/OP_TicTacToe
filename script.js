@@ -1,25 +1,51 @@
-let play = ''
-let msg_display = document.querySelector('.message')
-const history = []
-const squares = document.querySelectorAll('.square')
+let lol = 0
+let history = []
 
-squares.forEach((square, index) => {
-    square.addEventListener('click', () => {
-        if (square.textContent == '') {
-          if (play=='' || play=='O') play = 'X'
-          else play = 'O'
-          square.textContent = play
-          history.push(play)
-          // console.log(history)
-        }
-    })
-})
+function createPlayer (name) {
+    // const pl_name = name
+    const getName = () => name
 
-let winner = calculateWinner(history)
-let message = 'Next Player: '
-if (winner) {
-  msg_display.TextContent = message + winner
+    return { getName }
 }
+
+const GameBoard = (play) => {
+    this.board = ['X', 'O', 'O', 'X', 'X', 'O', 'O', 'X', 'O']
+    // this.board = []
+    // this.add = () => { this.board.push(play) }
+    // this.board.push(play)
+    // this.show = () => {
+    //     for (let i = 0; i < this.board.length; i += 3) {
+    //         console.log(this.board.slice(i, i + 3).join(' '));
+    //     }
+    // }
+    this.show = () => {
+        for (let i = 0; i < history.length; i += 3) {
+            console.log(history.slice(i, i + 3).join(' '));
+        }
+    }
+
+    return { show }  // gotta expose board so GameState can push into it (?)
+}
+
+function GameState() {
+    let play
+    let board
+        do {
+            play = prompt('Type X or O, then press Enter')
+        } while (play!=='x' && play!=='o' && play!=='X' && play!=='O')
+        
+        history.push(play)
+        board = GameBoard(history)
+        console.log(`You played ${play}`)
+        board.show()
+}
+
+while (lol < 6) {
+    GameState()
+    lol++
+}
+// GameState()
+// GameBoard().show()
 
 function calculateWinner(squares) {
     const lines = [

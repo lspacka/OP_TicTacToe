@@ -1,0 +1,10 @@
+each player == obj
+GameBoard == ?
+GameState == obj
+
+where to check for the winner? i.e how to handle the loop of the game
+
+- before each play GameState prompts the player
+- on each play GameState pushes the play to the board array inside GameBoard
+  (Im in a pickle with this one. have a crude workaround with a history array, but it's really ugly...)
+- after each play GameState calls GameBoard factory(?) and shows (returns) the (current) board
