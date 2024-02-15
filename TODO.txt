@@ -1,10 +1,18 @@
-each player == obj
+Players == obj
 GameBoard == ?
 GameState == obj
 
 where to check for the winner? i.e how to handle the loop of the game
+LOOP:
+  1. prompt the player
+  2. check for winner
+  3. if (winner) escape loop, show the winner. reset game
+  4. else go back to 1
 
+- keep track of the current play ('X' or 'O')
 - before each play GameState prompts the player
+  + validate input (row, col) with regex
 - on each play GameState pushes the play to the board array inside GameBoard
-  (Im in a pickle with this one. have a crude workaround with a history array, but it's really ugly...)
-- after each play GameState calls GameBoard factory(?) and shows (returns) the (current) board
+  + extract row and col from the input string
+  + put the current play on the board array
++ after each play GameState calls GameBoard factory(?) and shows (returns) the (current) board

@@ -1,5 +1,44 @@
-let lol = 0
-let history = []
+let empty_board = Array(3).fill(null).map(() => Array(3).fill(' '))
+
+function GameBoard(board) {  
+    const add = (input, play) => {
+        const [row, col] = input.split(',')
+        board[row-1][col-1] = play
+    }
+    const show = () => {
+        for (let i = 0; i < board.length; i++) {
+                console.log(board[i]);
+            }
+    }
+
+    return { add, show }
+}
+
+function Game() {
+    let play = 'X'
+    let board = GameBoard(empty_board)
+    let i = 0
+
+    while (i < 6) {
+        let input = prompt('Enter your move (row, column): ')
+        let input_pattern = /^\s*[1-3]\s*,\s*[1-3]\s*$/
+
+        if (input_pattern.test(input)) {
+            board.add(input, play)
+            console.log('--------------------------')
+            board.show()
+        } else {
+            console.log('Invalid input format. Please enter in the format: row, column')
+        }
+        i++
+    }
+}
+
+Game()
+
+// let g_board = GameBoard(empty_board)
+// g_board.add()
+// g_board.show()
 
 function createPlayer (name) {
     // const pl_name = name
@@ -7,45 +46,6 @@ function createPlayer (name) {
 
     return { getName }
 }
-
-const GameBoard = (play) => {
-    this.board = ['X', 'O', 'O', 'X', 'X', 'O', 'O', 'X', 'O']
-    // this.board = []
-    // this.add = () => { this.board.push(play) }
-    // this.board.push(play)
-    // this.show = () => {
-    //     for (let i = 0; i < this.board.length; i += 3) {
-    //         console.log(this.board.slice(i, i + 3).join(' '));
-    //     }
-    // }
-    this.show = () => {
-        for (let i = 0; i < history.length; i += 3) {
-            console.log(history.slice(i, i + 3).join(' '));
-        }
-    }
-
-    return { show }  // gotta expose board so GameState can push into it (?)
-}
-
-function GameState() {
-    let play
-    let board
-        do {
-            play = prompt('Type X or O, then press Enter')
-        } while (play!=='x' && play!=='o' && play!=='X' && play!=='O')
-        
-        history.push(play)
-        board = GameBoard(history)
-        console.log(`You played ${play}`)
-        board.show()
-}
-
-while (lol < 6) {
-    GameState()
-    lol++
-}
-// GameState()
-// GameBoard().show()
 
 function calculateWinner(squares) {
     const lines = [
@@ -67,3 +67,11 @@ function calculateWinner(squares) {
     }
     return null
   }
+
+//   for (let i = 0; i < GameBoard.board.length; i += 3) {
+//     console.log(GameBoard.board.slice(i, i + 3).join(' '));
+//  }
+
+// for (let i = 0; i < board.length; i++) {
+//     console.log(board[i]);
+// } 
