@@ -1,32 +1,52 @@
-let empty_board = Array(3).fill(null).map(() => Array(3).fill(' '))
+const new_board = Array(3).fill(null).map(() => Array(3).fill('-'))
+
+function createPlayer (play) {
+    const plays = () => play
+
+    return { plays }
+}
 
 function GameBoard(board) {  
     const add = (input, play) => {
         const [row, col] = input.split(',')
         board[row-1][col-1] = play
     }
+
+    const flatten = () => {
+        const board_copy = JSON.parse(JSON.stringify(board))
+    }
+    
     const show = () => {
         for (let i = 0; i < board.length; i++) {
-                console.log(board[i]);
-            }
+            let output = board.map(innerArray => innerArray.join(' '))
+            output = output.join('\n')
+            console.log(output)
+        }
     }
 
-    return { add, show }
+    return { add, flatten, show }
 }
 
 function Game() {
     let play = 'X'
-    let board = GameBoard(empty_board)
+    let player1 = createPlayer('X')
+    let player2 = createPlayer('O')
+    let board = GameBoard(new_board)
     let i = 0
 
     while (i < 6) {
+        const CurrentPlayer = (p1, p2) => {
+            //
+        }
+
         let input = prompt('Enter your move (row, column): ')
         let input_pattern = /^\s*[1-3]\s*,\s*[1-3]\s*$/
 
         if (input_pattern.test(input)) {
             board.add(input, play)
-            console.log('--------------------------')
+            console.log('--------------')
             board.show()
+            play = (play == 'X') ? 'O' : 'X'
         } else {
             console.log('Invalid input format. Please enter in the format: row, column')
         }
@@ -36,16 +56,10 @@ function Game() {
 
 Game()
 
-// let g_board = GameBoard(empty_board)
+// let g_board = GameBoard(new_board)
 // g_board.add()
 // g_board.show()
 
-function createPlayer (name) {
-    // const pl_name = name
-    const getName = () => name
-
-    return { getName }
-}
 
 function calculateWinner(squares) {
     const lines = [
@@ -62,7 +76,7 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i]
       if (squares[a] && squares[a]===squares[b] && squares[a]===squares[c]) {
-        squares[a]
+        return squares[a]
       }
     }
     return null

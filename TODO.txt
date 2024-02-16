@@ -5,9 +5,10 @@ GameState == obj
 where to check for the winner? i.e how to handle the loop of the game
 LOOP:
   1. prompt the player
-  2. check for winner
-  3. if (winner) escape loop, show the winner. reset game
-  4. else go back to 1
+  2. check for winner and a move already in place
+  3. check next play
+  4. if (winner) escape loop, show the winner. reset game
+  5. else, place play on board. go back to 1
 
 - keep track of the current play ('X' or 'O')
 - before each play GameState prompts the player
