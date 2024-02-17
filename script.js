@@ -1,4 +1,5 @@
 const new_board = Array(3).fill(null).map(() => Array(3).fill('-'))
+const dummy = Array(3).fill(null).map(() => Array(3).fill('X'))
 
 function createPlayer (play) {
     const plays = () => play
@@ -12,16 +13,8 @@ function GameBoard(board) {
         board[row-1][col-1] = play
     }
 
-    const flatten = () => {
-        // const board_copy = JSON.parse(JSON.stringify(board))
-        // const flat_board = [board_copy]
-        // return flat_board
-        const flat_board = board.flatMap(innerArray => innerArray)
-        const wrap_board = [flat_board]
-        return wrap_board
-    }
-
-    const checkWinner = (flat_board) => {
+    const checkWin = () => {
+        const flat = [].concat.apply([], board)
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -35,8 +28,9 @@ function GameBoard(board) {
     
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i]
-            if (flat_board[a] && flat_board[a]===flat_board[b] && flat_board[a]===flat_board[c]) {
-                return flat_board[a]
+            if (flat[a] == '-') return null
+            if (flat[a] && flat[a]==flat[b] && flat[a]==flat[c]) {
+                return flat[a]
             }
         }
         return null
@@ -50,7 +44,7 @@ function GameBoard(board) {
         }
     }
 
-    return { add, flatten, checkWinner, show }
+    return { add, checkWin, show }
 }
 
 function Game() {
@@ -58,6 +52,7 @@ function Game() {
     let player1 = createPlayer('X')
     let player2 = createPlayer('O')
     let board = GameBoard(new_board)
+    // let board2 = GameBoard(dummy)
     let winner
     let i = 0
 
@@ -65,13 +60,13 @@ function Game() {
         //
     }
 
-    while (i < 6) {
+    while (i < 9) {
         let input = prompt('Enter your move (row, column): ')
         let input_pattern = /^\s*[1-3]\s*,\s*[1-3]\s*$/
         // flat_board = board.flatten()
-        // winner = board.checkWinner(flat_board)
-        let flat_board = board.flatten();
-        winner = board.checkWinner(flat_board);
+        // winner = board.checkWin(flat_board)
+        // let flat_board = board.flatten();
+        // winner = board.checkWin(flat_board);
 
         if (winner) {
             console.log(`${play} WINS!!!`)
@@ -91,32 +86,6 @@ function Game() {
 }
 
 Game()
-
-// let g_board = GameBoard(new_board)
-// g_board.add()
-// g_board.show()
-
-
-function calculateWinner(squares) {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]
-    ]
-
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i]
-      if (squares[a] && squares[a]===squares[b] && squares[a]===squares[c]) {
-        return squares[a]
-      }
-    }
-    return null
-}
 
 //   for (let i = 0; i < Gameflat_Board.flat_board.length; i += 3) {
 //     console.log(Gameflat_Board.flat_board.slice(i, i + 3).join(' '));
