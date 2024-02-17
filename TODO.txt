@@ -18,3 +18,5 @@ LOOP:
   + put the current play on the board array
 + after each play GameState calls GameBoard factory(?) and shows (returns) the (current) board
 - restart game without reloading the page
+- prevent the play from switching if theres a wrong input
+- have checkWin() exclude '-' in any case

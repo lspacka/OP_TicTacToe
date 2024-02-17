@@ -25,11 +25,11 @@ function GameBoard(board) {
             [0, 4, 8],
             [2, 4, 6]
         ]
-    
+
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i]
-            if (flat[a] == '-') return null
-            if (flat[a] && flat[a]==flat[b] && flat[a]==flat[c]) {
+            if (flat[a] && flat[a]==flat[b] && flat[a]==flat[c] &&
+                flat[a]!='-' && flat[b]!='-' && flat[c]!='-') {
                 return flat[a]
             }
         }
@@ -53,25 +53,21 @@ function Game() {
     let player2 = createPlayer('O')
     let board = GameBoard(new_board)
     // let board2 = GameBoard(dummy)
-    let winner
-    let i = 0
+    let winner, input, input_pattern
 
     const CurrentPlayer = (p1, p2) => {
         //
     }
 
-    while (i < 9) {
-        let input = prompt('Enter your move (row, column): ')
-        let input_pattern = /^\s*[1-3]\s*,\s*[1-3]\s*$/
-        // flat_board = board.flatten()
-        // winner = board.checkWin(flat_board)
-        // let flat_board = board.flatten();
-        // winner = board.checkWin(flat_board);
-
+    while (true) {
+        winner = board.checkWin()
         if (winner) {
-            console.log(`${play} WINS!!!`)
+            console.log(`${winner} WINS!!!`)
             break
         }
+
+        input = prompt('Enter your move (row, column): ')
+        input_pattern = /^\s*[1-3]\s*,\s*[1-3]\s*$/
 
         if (input_pattern.test(input)) {
             board.add(input, play)
@@ -81,7 +77,6 @@ function Game() {
         } else {
             console.log('Invalid input format. Please enter in the format: row, column')
         }
-        i++
     }
 }
 
