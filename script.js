@@ -53,20 +53,34 @@ function Game() {
     let player2 = createPlayer('O')
     let board = GameBoard(new_board)
     let player = 'player 1'
-    let winner, input, input_pattern
+    let winner, input, end_input, reset, reset_prompt
+
+    let input_regex = /^\s*[1-3]\s*,\s*[1-3]\s*$/
+    let reset_regex = /^[ynYN]$/
 
     while (true) {
         winner = board.checkWin()
         if (winner) {
+            reset_prompt = `${winner} WINS!\n\nPlay again? (Y)es (N)o`
             console.log(`${winner} WINS!!!`)
+            end_input = prompt(reset_prompt)
+            
+            //  Reset game prompt loop
+            while (!reset_regex.test(end_input)) {  
+                if (reset_regex.test(end_input)) {
+                    break
+                } else {
+                    end_input = prompt(reset_prompt) 
+                }
+            }
+            reset = (end_input=='y' || end_input=='Y') ? true : false
             break
         }
 
         input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
-        input_pattern = /^\s*[1-3]\s*,\s*[1-3]\s*$/
         player = (play == 'X') ? 'player 2' : 'player 1'
 
-        if (input_pattern.test(input)) {
+        if (input_regex.test(input)) {
             board.add(input, play)
             console.log('--------------')
             board.show()

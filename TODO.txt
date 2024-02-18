@@ -17,5 +17,6 @@ LOOP:
   + extract row and col from the input string
   + put the current play on the board array
 + after each play GameState calls GameBoard factory(?) and shows (returns) the (current) board
-- restart game without reloading the page
 + have checkWin() exclude all the '-' 
+
+- restart game without reloading the page
