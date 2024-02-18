@@ -10,13 +10,12 @@ LOOP:
   4. if (winner) escape loop, show the winner. reset game
   5. else, place play on board. go back to 1
 
-- keep track of the current play ('X' or 'O')
-- before each play GameState prompts the player
++ keep track of the current play ('X' or 'O')
++ before each play GameState prompts the player
   + validate input (row, col) with regex
-- on each play GameState pushes the play to the board array inside GameBoard
++ on each play GameState pushes the play to the board array inside GameBoard
   + extract row and col from the input string
   + put the current play on the board array
 + after each play GameState calls GameBoard factory(?) and shows (returns) the (current) board
 - restart game without reloading the page
-- prevent the play from switching if theres a wrong input
-- have checkWin() exclude '-' in any case
++ have checkWin() exclude all the '-' 

@@ -14,7 +14,7 @@ function GameBoard(board) {
     }
 
     const checkWin = () => {
-        const flat = [].concat.apply([], board)
+        const flat = [].concat.apply([], board)   // flattens 2d board array
         const lines = [
             [0, 1, 2],
             [3, 4, 5],
@@ -52,12 +52,8 @@ function Game() {
     let player1 = createPlayer('X')
     let player2 = createPlayer('O')
     let board = GameBoard(new_board)
-    // let board2 = GameBoard(dummy)
+    let player = 'player 1'
     let winner, input, input_pattern
-
-    const CurrentPlayer = (p1, p2) => {
-        //
-    }
 
     while (true) {
         winner = board.checkWin()
@@ -66,8 +62,9 @@ function Game() {
             break
         }
 
-        input = prompt('Enter your move (row, column): ')
+        input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
         input_pattern = /^\s*[1-3]\s*,\s*[1-3]\s*$/
+        player = (play == 'X') ? 'player 2' : 'player 1'
 
         if (input_pattern.test(input)) {
             board.add(input, play)
@@ -75,17 +72,10 @@ function Game() {
             board.show()
             play = (play == 'X') ? 'O' : 'X'
         } else {
+            player = (play == 'X') ? 'player 1' : 'player 2'
             console.log('Invalid input format. Please enter in the format: row, column')
         }
     }
 }
 
 Game()
-
-//   for (let i = 0; i < Gameflat_Board.flat_board.length; i += 3) {
-//     console.log(Gameflat_Board.flat_board.slice(i, i + 3).join(' '));
-//  }
-
-// for (let i = 0; i < flat_board.length; i++) {
-//     console.log(flat_board[i]);
-// } 
