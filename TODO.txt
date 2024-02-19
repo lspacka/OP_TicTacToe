@@ -19,5 +19,5 @@ LOOP:
 + after each play GameState calls GameBoard factory(?) and shows (returns) the (current) board
 + have checkWin() exclude all the '-' 
 
-- restart game without reloading the page
-- check if theres a move in place
++ restart game without reloading the page 3hrs
+- check if theres a move in place 2hrs

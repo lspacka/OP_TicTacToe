@@ -7,7 +7,9 @@ function createPlayer (play) {
     return { plays }
 }
 
-function GameBoard(board) {  
+function GameBoard(board) {
+    board = JSON.parse(JSON.stringify(new_board))
+
     const add = (input, play) => {
         const [row, col] = input.split(',')
         board[row-1][col-1] = play
@@ -44,40 +46,53 @@ function GameBoard(board) {
         }
     }
 
-    return { add, checkWin, show }
+    // const clear = () => {
+    //     for (let i = 0; i < board.length; i++) {
+    //         for (let j = 0; j < 3; j++) {
+    //             board[i][j] = '-'
+    //         }
+    //     }
+    // }
+
+    return { add, checkWin, show}
 }
 
 function Game() {
-    //  Maybe I should put all this init stuff in GameState()?
     let play = 'X'
     let player1 = createPlayer('X')
     let player2 = createPlayer('O')
     let board = GameBoard(new_board)
     let player = 'player 1'
-    let start = true
     let winner, input, end_input, reset_prompt
 
     let input_regex = /^\s*[1-3]\s*,\s*[1-3]\s*$/
     let reset_regex = /^[ynYN]$/
 
+    const reset = () => {
+        play = 'X'
+        player = 'player 1'
+        board = GameBoard(new_board)
+        console.clear()
+    }
+
     const loop = () => {
+        // let end_input
         while (true) {
             winner = board.checkWin()
-            if (winner) {
+            if (winner) {  
                 reset_prompt = `${winner} WINS!\n\nPlay again? (Y)es (N)o`
                 console.log(`${winner} WINS!!!`)
                 end_input = prompt(reset_prompt)
-    
-                //  Reset game prompt loop
-                while (!reset_regex.test(end_input)) {  
-                    if (reset_regex.test(end_input)) {
-                        break
-                    } else {
-                        end_input = prompt(reset_prompt) 
-                    }
+
+                while (!reset_regex.test(end_input)) {
+                    end_input = prompt(reset_prompt)
                 }
-                // start = (end_input=='y' || end_input=='Y') ? true : false
-                break
+                if (end_input.toLowerCase() == 'y'){
+                    reset()
+                } else {
+                    break
+                }
+                // break
             }
     
             input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
@@ -93,21 +108,13 @@ function Game() {
                 console.log('Invalid input format. Please enter in the format: row, column')
             }
         }
-        start = (end_input=='y' || end_input=='Y') ? true : false
     }
 
-    return { start, loop }
+    return { loop }
 }
 
 (function GameState() {
     const game = Game()
-    let running = game.start
-    // game.loop()
-    console.log(running)
-    if (running) {
-        running = game.start
-        game.loop()
-    } else {
-        console.log(running)
-    }
+    
+    game.loop()
 })()
