@@ -48,48 +48,66 @@ function GameBoard(board) {
 }
 
 function Game() {
+    //  Maybe I should put all this init stuff in GameState()?
     let play = 'X'
     let player1 = createPlayer('X')
     let player2 = createPlayer('O')
     let board = GameBoard(new_board)
     let player = 'player 1'
-    let winner, input, end_input, reset, reset_prompt
+    let start = true
+    let winner, input, end_input, reset_prompt
 
     let input_regex = /^\s*[1-3]\s*,\s*[1-3]\s*$/
     let reset_regex = /^[ynYN]$/
 
-    while (true) {
-        winner = board.checkWin()
-        if (winner) {
-            reset_prompt = `${winner} WINS!\n\nPlay again? (Y)es (N)o`
-            console.log(`${winner} WINS!!!`)
-            end_input = prompt(reset_prompt)
-            
-            //  Reset game prompt loop
-            while (!reset_regex.test(end_input)) {  
-                if (reset_regex.test(end_input)) {
-                    break
-                } else {
-                    end_input = prompt(reset_prompt) 
+    const loop = () => {
+        while (true) {
+            winner = board.checkWin()
+            if (winner) {
+                reset_prompt = `${winner} WINS!\n\nPlay again? (Y)es (N)o`
+                console.log(`${winner} WINS!!!`)
+                end_input = prompt(reset_prompt)
+    
+                //  Reset game prompt loop
+                while (!reset_regex.test(end_input)) {  
+                    if (reset_regex.test(end_input)) {
+                        break
+                    } else {
+                        end_input = prompt(reset_prompt) 
+                    }
                 }
+                // start = (end_input=='y' || end_input=='Y') ? true : false
+                break
             }
-            reset = (end_input=='y' || end_input=='Y') ? true : false
-            break
+    
+            input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
+            player = (play == 'X') ? 'player 2' : 'player 1'
+    
+            if (input_regex.test(input)) {
+                board.add(input, play)
+                console.log('--------------')
+                board.show()
+                play = (play == 'X') ? 'O' : 'X'
+            } else {
+                player = (play == 'X') ? 'player 1' : 'player 2'
+                console.log('Invalid input format. Please enter in the format: row, column')
+            }
         }
-
-        input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
-        player = (play == 'X') ? 'player 2' : 'player 1'
-
-        if (input_regex.test(input)) {
-            board.add(input, play)
-            console.log('--------------')
-            board.show()
-            play = (play == 'X') ? 'O' : 'X'
-        } else {
-            player = (play == 'X') ? 'player 1' : 'player 2'
-            console.log('Invalid input format. Please enter in the format: row, column')
-        }
+        start = (end_input=='y' || end_input=='Y') ? true : false
     }
+
+    return { start, loop }
 }
 
-Game()
+(function GameState() {
+    const game = Game()
+    let running = game.start
+    // game.loop()
+    console.log(running)
+    if (running) {
+        running = game.start
+        game.loop()
+    } else {
+        console.log(running)
+    }
+})()
