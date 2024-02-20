@@ -9,14 +9,12 @@ function createPlayer (play) {
 
 function GameBoard(board) {
     board = JSON.parse(JSON.stringify(new_board))
-    let empty = true
 
     const add = (input, play) => {
         const [row, col] = input.split(',')
         if (board[row-1][col-1] == '-') {
             board[row-1][col-1] = play
-            empty = false
-            console.log(empty)
+            return true
         }
     }
 
@@ -82,7 +80,6 @@ function Game() {
         play = 'X'
         player = 'player 1'
         board = GameBoard(new_board)
-        board.empty = true
         console.clear()
     }
 
@@ -105,17 +102,22 @@ function Game() {
                 // break
             } else if (board.checkDraw()) {
                 alert("It's a draw!")
+                //  prompt to restart
                 break
             }
-            // if (board.empty):
+
             input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
             player = (play == 'X') ? 'player 2' : 'player 1'
     
             if (input_regex.test(input)) {
-                board.add(input, play)
-                console.log('--------------')
-                board.show()
-                play = (play == 'X') ? 'O' : 'X'
+                if (board.add(input, play)) {
+                    console.log('--------------')
+                    board.show()
+                    play = (play == 'X') ? 'O' : 'X'
+                } else {
+                    player = (play == 'X') ? 'player 1' : 'player 2'
+                }
+                
             } else {
                 player = (play == 'X') ? 'player 1' : 'player 2'
                 console.log('Invalid input format. Please enter in the format: row, column')

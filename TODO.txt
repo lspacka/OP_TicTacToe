@@ -23,5 +23,5 @@ LOOP:
 + have checkWin() exclude all the '-' 
 
 + restart game without reloading the page
-- check if theres a move in place 
-- check for draw
++ check if theres a move in place 
++ check for draw
