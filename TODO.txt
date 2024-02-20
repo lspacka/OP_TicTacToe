@@ -2,6 +2,9 @@ Players == obj
 GameBoard == ?
 GameState == obj
 
+- the ultimate challenge (apart from AI ofc) would be to keep both the console and the graphic games.
+  that is, every move on the graphic board is reflected on the console. 
+
 where to check for the winner? i.e how to handle the loop of the game
 LOOP:
   1. prompt the player
@@ -19,5 +22,6 @@ LOOP:
 + after each play GameState calls GameBoard factory(?) and shows (returns) the (current) board
 + have checkWin() exclude all the '-' 
 
-+ restart game without reloading the page 3hrs
-- check if theres a move in place 2hrs
++ restart game without reloading the page
+- check if theres a move in place 
+- check for draw

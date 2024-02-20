@@ -9,10 +9,15 @@ function createPlayer (play) {
 
 function GameBoard(board) {
     board = JSON.parse(JSON.stringify(new_board))
+    let empty = true
 
     const add = (input, play) => {
         const [row, col] = input.split(',')
-        board[row-1][col-1] = play
+        if (board[row-1][col-1] == '-') {
+            board[row-1][col-1] = play
+            empty = false
+            console.log(empty)
+        }
     }
 
     const checkWin = () => {
@@ -46,6 +51,11 @@ function GameBoard(board) {
         }
     }
 
+    const checkDraw = () => {
+        const flat = [].concat.apply([], board)
+        return flat.every(square => square != '-')
+    }
+
     // const clear = () => {
     //     for (let i = 0; i < board.length; i++) {
     //         for (let j = 0; j < 3; j++) {
@@ -54,7 +64,7 @@ function GameBoard(board) {
     //     }
     // }
 
-    return { add, checkWin, show}
+    return { empty, add,  checkWin, checkDraw, show }
 }
 
 function Game() {
@@ -72,11 +82,11 @@ function Game() {
         play = 'X'
         player = 'player 1'
         board = GameBoard(new_board)
+        board.empty = true
         console.clear()
     }
 
     const loop = () => {
-        // let end_input
         while (true) {
             winner = board.checkWin()
             if (winner) {  
@@ -93,8 +103,11 @@ function Game() {
                     break
                 }
                 // break
+            } else if (board.checkDraw()) {
+                alert("It's a draw!")
+                break
             }
-    
+            // if (board.empty):
             input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
             player = (play == 'X') ? 'player 2' : 'player 1'
     
