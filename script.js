@@ -1,5 +1,4 @@
 const new_board = Array(3).fill(null).map(() => Array(3).fill('-'))
-const dummy = Array(3).fill(null).map(() => Array(3).fill('X'))
 
 function createPlayer (play) {
     const plays = () => play
@@ -54,15 +53,7 @@ function GameBoard(board) {
         return flat.every(square => square != '-')
     }
 
-    // const clear = () => {
-    //     for (let i = 0; i < board.length; i++) {
-    //         for (let j = 0; j < 3; j++) {
-    //             board[i][j] = '-'
-    //         }
-    //     }
-    // }
-
-    return { empty, add,  checkWin, checkDraw, show }
+    return { add,  checkWin, checkDraw, show }
 }
 
 function Game() {
@@ -75,6 +66,8 @@ function Game() {
 
     let input_regex = /^\s*[1-3]\s*,\s*[1-3]\s*$/
     let reset_regex = /^[ynYN]$/
+    let draw_prompt = "IT'S A DRAW!!\n\nPlay again? (Y)es (N)o"
+
 
     const reset = () => {
         play = 'X'
@@ -87,7 +80,7 @@ function Game() {
         while (true) {
             winner = board.checkWin()
             if (winner) {  
-                reset_prompt = `${winner} WINS!\n\nPlay again? (Y)es (N)o`
+                reset_prompt = `${winner} WINS!!\n\nPlay again? (Y)es (N)o`
                 console.log(`${winner} WINS!!!`)
                 end_input = prompt(reset_prompt)
 
@@ -101,9 +94,16 @@ function Game() {
                 }
                 // break
             } else if (board.checkDraw()) {
-                alert("It's a draw!")
-                //  prompt to restart
-                break
+                console.log("IT'S A DRAW!")
+                end_input = prompt(draw_prompt)
+                while(!reset_regex.test(end_input)) {
+                    end_input = prompt(draw_prompt)
+                }
+                if (end_input.toLowerCase() == 'y') {
+                    reset()
+                } else {
+                    break
+                }
             }
 
             input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
