@@ -14,7 +14,7 @@ function GameBoard(board) {
         if (board[row-1][col-1] == '-') {
             board[row-1][col-1] = play
             return true
-        }
+        } 
     }
 
     const checkWin = () => {
@@ -115,6 +115,7 @@ function Game() {
                     board.show()
                     play = (play == 'X') ? 'O' : 'X'
                 } else {
+                    console.log('Invalid move. Please select an empty cell')
                     player = (play == 'X') ? 'player 1' : 'player 2'
                 }
                 
