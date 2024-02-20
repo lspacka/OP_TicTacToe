@@ -1,13 +1,27 @@
-const new_board = Array(3).fill(null).map(() => Array(3).fill('-'))
+document.body.addEventListener('keydown', KeyFunc)
+document.body.addEventListener('mousedown', e => {
+    e.preventDefault()
+})
 
-function createPlayer (play) {
-    const plays = () => play
+// const new_board = Array(3).fill(null).map(() => Array(3).fill('-'))
+const board = document.querySelectorAll('.square')
+const banner = document.querySelector('.banner')
 
-    return { plays }
+function KeyFunc(e) {
+    if (e.key.toLowerCase()=='y' || e.key.toLowerCase()=='n') {
+        banner.textContent = 'YES'
+        console.log(e.key)
+    }
 }
 
+// function createPlayer (play) {
+//     const plays = () => play
+
+//     return { plays }
+// }
+
 function GameBoard(board) {
-    board = JSON.parse(JSON.stringify(new_board))
+    // board = JSON.parse(JSON.stringify(board))
 
     const add = (input, play) => {
         const [row, col] = input.split(',')
@@ -57,74 +71,92 @@ function GameBoard(board) {
 }
 
 function Game() {
+    const new_grBoard = Array(9).fill(' ') // for storing the moves on the screen
     let play = 'X'
-    let player1 = createPlayer('X')
-    let player2 = createPlayer('O')
-    let board = GameBoard(new_board)
+    // let player1 = createPlayer('X')
+    // let player2 = createPlayer('O')
+    let gr_board = GameBoard(new_grBoard)
     let player = 'player 1'
     let winner, input, end_input, reset_prompt
+    let i = 0
 
-    let input_regex = /^\s*[1-3]\s*,\s*[1-3]\s*$/
-    let reset_regex = /^[ynYN]$/
-    let draw_prompt = "IT'S A DRAW!!\n\nPlay again? (Y)es (N)o"
+    // let input_regex = /^\s*[1-3]\s*,\s*[1-3]\s*$/
+    // let reset_regex = /^[ynYN]$/
+    // let draw_prompt = "IT'S A DRAW!!\n\nPlay again? (Y)es (N)o"
 
 
     const reset = () => {
         play = 'X'
         player = 'player 1'
-        board = GameBoard(new_board)
+        // board = GameBoard(new_board)
         console.clear()
     }
 
     const loop = () => {
-        while (true) {
-            winner = board.checkWin()
-            if (winner) {  
-                reset_prompt = `${winner} WINS!!\n\nPlay again? (Y)es (N)o`
-                console.log(`${winner} WINS!!!`)
-                end_input = prompt(reset_prompt)
+        banner.textContent = `Next player: ${play}`
+        winner = gr_board.checkWin()
 
-                while (!reset_regex.test(end_input)) {
-                    end_input = prompt(reset_prompt)
-                }
-                if (end_input.toLowerCase() == 'y'){
-                    reset()
-                } else {
-                    break
-                }
-                // break
-            } else if (board.checkDraw()) {
-                console.log("IT'S A DRAW!")
-                end_input = prompt(draw_prompt)
-                while(!reset_regex.test(end_input)) {
-                    end_input = prompt(draw_prompt)
-                }
-                if (end_input.toLowerCase() == 'y') {
-                    reset()
-                } else {
-                    break
-                }
-            }
-
-            input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
-            player = (play == 'X') ? 'player 2' : 'player 1'
-    
-            if (input_regex.test(input)) {
-                if (board.add(input, play)) {
-                    console.log('--------------')
-                    board.show()
-                    play = (play == 'X') ? 'O' : 'X'
-                } else {
-                    console.log('Invalid move. Please select an empty cell')
-                    player = (play == 'X') ? 'player 1' : 'player 2'
-                }
-                
-            } else {
-                player = (play == 'X') ? 'player 1' : 'player 2'
-                console.log('Invalid input format. Please enter in the format: row, column')
-            }
-        }
+        board.forEach(square => {
+            square.addEventListener('click', () => {
+                square.textContent = play
+                gr_board[square.id-1] = play
+                console.log(gr_board)
+                play = (play == 'X') ? 'O' : 'X'
+                banner.textContent = `Next player: ${play}`
+            })
+        })
+        
     }
+
+    // const loop = () => {
+    //     while (true) {
+    //         winner = board.checkWin()
+    //         if (winner) {  
+    //             reset_prompt = `${winner} WINS!!\n\nPlay again? (Y)es (N)o`
+    //             console.log(`${winner} WINS!!!`)
+    //             end_input = prompt(reset_prompt)
+
+    //             while (!reset_regex.test(end_input)) {
+    //                 end_input = prompt(reset_prompt)
+    //             }
+    //             if (end_input.toLowerCase() == 'y'){
+    //                 reset()
+    //             } else {
+    //                 break
+    //             }
+    //             // break
+    //         } else if (board.checkDraw()) {
+    //             console.log("IT'S A DRAW!")
+    //             end_input = prompt(draw_prompt)
+    //             while(!reset_regex.test(end_input)) {
+    //                 end_input = prompt(draw_prompt)
+    //             }
+    //             if (end_input.toLowerCase() == 'y') {
+    //                 reset()
+    //             } else {
+    //                 break
+    //             }
+    //         }
+
+    //         input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
+    //         player = (play == 'X') ? 'player 2' : 'player 1'
+    
+    //         if (input_regex.test(input)) {
+    //             if (board.add(input, play)) {
+    //                 console.log('--------------')
+    //                 board.show()
+    //                 play = (play == 'X') ? 'O' : 'X'
+    //             } else {
+    //                 console.log('Invalid move. Please select an empty cell')
+    //                 player = (play == 'X') ? 'player 1' : 'player 2'
+    //             }
+                
+    //         } else {
+    //             player = (play == 'X') ? 'player 1' : 'player 2'
+    //             console.log('Invalid input format. Please enter in the format: row, column')
+    //         }
+    //     }
+    // }
 
     return { loop }
 }

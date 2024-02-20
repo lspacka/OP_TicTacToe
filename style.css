@@ -11,7 +11,7 @@
 
 body {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -35,13 +35,10 @@ h1 {
 .banner {
   align-self: center;
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .board {
-  display: flex;
-  align-self: center;
-  justify-self: center;
   font-size: 2.5rem;
   width:fit-content;
   height: fit-content;
@@ -49,9 +46,17 @@ h1 {
   margin-top: 30px;
 }
 
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .square {
+  display: grid;
+  align-items: center;
   width: 130px;
   height: 130px;
   border: 1px solid;
-  font-size: 3rem;
+  font-size: 4.5rem;
+  text-align: center;
 }

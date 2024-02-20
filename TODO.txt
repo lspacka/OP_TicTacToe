@@ -13,7 +13,7 @@ LOOP:
   5. else, place play on board. go back to 1
 
 DOM:
-  - //
+  - add each play to array
 
 CONSOLE: 
   + keep track of the current play ('X' or 'O')
@@ -28,3 +28,9 @@ CONSOLE:
   + restart game without reloading the page
   + check if theres a move in place 
   + check for draw
+
+AI:
+  priorities:
+    1st is to win
+    2nd is to prevent rival from winning
+    if rival is close to winning (how to determine?) then 2nd becomes 1st
