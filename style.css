@@ -24,22 +24,30 @@ body {
   height: 100vh;
   font-family: 'apple2';
   background: black;
-  color:rgb(13, 255, 0);
+  color:#00ff00; /* #0dff00 */
 }
 
 .container {
   display: flex;
   flex-direction: column;
   padding-top: 40px;
+  padding-bottom: 30px;
 }
 
 h1 {
   align-self: center;
-  transform: translateY(-70px);
+  transform: translateY(-30px);
   font-size: 2.2rem;
 }
 
 .banner {
+  align-self: center;
+  width: 100%;
+  font-size: 1rem;
+  white-space: pre-line;
+}
+
+.banner2 {
   align-self: center;
   width: 100%;
   font-size: 1rem;
@@ -52,6 +60,7 @@ h1 {
   height: fit-content;
   border: 1px solid;
   margin-top: 30px;
+  /* transform: translateY(20px); */
 }
 
 .row {

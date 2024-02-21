@@ -60,7 +60,7 @@ function GameBoard(board) {
 
     const checkDraw = () => {
         const flat = [].concat.apply([], board2)
-        return flat.every(square => square != '-')
+        return board2.every(square => square != '')
     }
 
     return { add, add2, checkWin, checkDraw, show }
@@ -79,7 +79,7 @@ function Game() {
     let player = 'player 1'
     let winner, end_input
     let i = 0
-    let draw_prompt = "IT'S A DRAW!!\n\nPlay again? (Y)es (N)o"
+    let draw_prompt = "It's a draw!\nPlay again? (Y)es (N)o"
 
     const reset = () => {
         squares.forEach(square => {
@@ -98,20 +98,29 @@ function Game() {
         squares.forEach(square => {
             square.addEventListener('click', () => {
                 gr_board.add2(square, play)
-                checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
+                winner = checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
+                if (winner) {
+                    banner.textContent = `${winner} WINS! Play again? (Y)es (N)o`
+                } else {
+                    play = (play == 'X') ? 'O' : 'X'
+                    banner.textContent = `Next player: ${play}`
+                } 
+                if (gr_board.checkDraw()) {
+                    banner.textContent = draw_prompt
+                }
             })
         })
     }
 
     function checkWinner(board) {
-        winner = board.checkWin()
-        console.log(winner)
-        if (winner) {
-            banner.textContent = `${winner} WINS! Play again? (Y)es (N)o`
-        } else {
-            play = (play == 'X') ? 'O' : 'X'
-            banner.textContent = `Next player: ${play}`
-        }
+        let winner = board.checkWin()
+        if (winner) return winner
+        // if (winner) {
+        //     banner.textContent = `${winner} WINS! Play again? (Y)es (N)o`
+        // } else {
+        //     play = (play == 'X') ? 'O' : 'X'
+        //     banner.textContent = `Next player: ${play}`
+        // }
     }
 
     function ResetPrompt(e) {
