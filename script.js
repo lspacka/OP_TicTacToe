@@ -1,17 +1,9 @@
-document.body.addEventListener('keydown', KeyFunc)
 document.body.addEventListener('mousedown', e => {
     e.preventDefault()
 })
 
-const board = document.querySelectorAll('.square')
+const squares = document.querySelectorAll('.square')
 const banner = document.querySelector('.banner')
-
-function KeyFunc(e) {
-    if (e.key.toLowerCase()=='y' || e.key.toLowerCase()=='n') {
-        banner.textContent = 'YES'
-        console.log(e.key)
-    }
-}
 
 // function createPlayer (play) {
 //     const plays = () => play
@@ -32,8 +24,8 @@ function GameBoard(board) {
 
     const add2 = (square, play) => {
         if (square.textContent) return
-        square.textContent = play
         board2[square.id-1] = play
+        square.textContent = play
     }
 
     const checkWin = () => {
@@ -75,6 +67,8 @@ function GameBoard(board) {
 }
 
 function Game() {
+    document.body.addEventListener('keydown', ResetPrompt)
+
     const new_grBoard = Array(9).fill('') // for storing the moves on the screen
     // const new_cBoard = Array(3).fill(null).map(() => Array(3).fill('-'))
     let play = 'X'
@@ -87,51 +81,45 @@ function Game() {
     let i = 0
     let draw_prompt = "IT'S A DRAW!!\n\nPlay again? (Y)es (N)o"
 
-
     const reset = () => {
+        squares.forEach(square => {
+            square.textContent = ''
+        })
+        
         play = 'X'
         player = 'player 1'
         gr_board = GameBoard(new_grBoard)
+        banner.textContent = `Next player: ${play}`
         console.clear()
+    }
+
+    const loop = () => {
+        banner.textContent = `Next player: ${play}`
+        squares.forEach(square => {
+            square.addEventListener('click', () => {
+                gr_board.add2(square, play)
+                checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
+            })
+        })
     }
 
     function checkWinner(board) {
         winner = board.checkWin()
         console.log(winner)
         if (winner) {
-            banner.textContent = `${play} WINS! Play again? (Y)es (N)o`
+            banner.textContent = `${winner} WINS! Play again? (Y)es (N)o`
         } else {
             play = (play == 'X') ? 'O' : 'X'
             banner.textContent = `Next player: ${play}`
         }
     }
 
-    const loop = () => {
-        banner.textContent = `Next player: ${play}`
-        board.forEach(square => {
-            square.addEventListener('click', () => {
-                gr_board.add2(square, play)
-                checkWinner(gr_board) // maybe use this outside eventlistener to break inf loop?
-            })
-        })
-        
-        // while (true) {
-        //     winner = gr_board.checkWin()
-        //     if (winner) {
-        //         banner.textContent = `${play} WINS!`
-        //         break
-        //     }
-
-        //     board.forEach(square => {
-        //         square.addEventListener('click', () => {
-        //             square.textContent = play
-        //             gr_board[square.id-1] = play
-        //             console.log(gr_board)
-        //             play = (play == 'X') ? 'O' : 'X'
-        //             banner.textContent = `Next player: ${play}`
-        //         })
-        //     }) 
-        // }
+    function ResetPrompt(e) {
+        if (e.key.toLowerCase()=='y') {
+            reset()
+        } else {
+            banner.textContent = `${winner} WINS!`
+        }
     }
 
     // const loop = () => {
