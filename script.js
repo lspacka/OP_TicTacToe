@@ -68,17 +68,21 @@ function GameBoard(board) {
 }
 
 function Game() {
-    const key_listen = () => document.body.addEventListener('keydown', ResetPrompt)
+    // const keyListen = () => document.body.addEventListener('keydown', ResetPrompt)
+    let keyListener = null
+    const keyListen = () => {
+        keyListener = (e) => ResetPrompt(e)
+        document.body.addEventListener('keydown', keyListener)
+    }
 
     const new_grBoard = Array(9).fill('') // for storing on screen moves 
-    // const new_cBoard = Array(3).fill(null).map(() => Array(3).fill('-'))
+    const new_cBoard = Array(3).fill(null).map(() => Array(3).fill('-'))
     let play = 'X'
     // let player1 = createPlayer('X')
     // let player2 = createPlayer('O')
     let gr_board = GameBoard(new_grBoard)
-    // let con_board = GameBoard(new_cBoard)
-    // let player = 'player 1'
-    let winner
+    let con_board = GameBoard(new_cBoard)
+    let winner = null
     let game_over = false
     let draw_prompt = "It's a draw!\nPlay again? (Y)es (N)o"
 
@@ -86,12 +90,17 @@ function Game() {
         squares.forEach(square => {
             square.textContent = ''
         })
+
+        if (keyListener) {
+            document.body.removeEventListener('keydown', keyListener) 
+            keyListener = null
+        }
         
         play = 'X'
-        player = 'player 1'
         gr_board = GameBoard(new_grBoard)
         banner.textContent = `Next player: ${play}`
         game_over = false
+        // winner = null
         console.clear()
     }
 
@@ -103,15 +112,15 @@ function Game() {
                     if (gr_board.add2(square, play)) {
                         winner = checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
                         if (winner) {
-                            key_listen()
-                            banner.textContent = `${winner} WINS! Play again? (Y)es (N)o` 
+                            keyListen() 
                             game_over = true
+                            banner.textContent = `${winner} WINS! Play again? (Y)es (N)o`
                         } else {
                             play = (play == 'X') ? 'O' : 'X'
                             banner.textContent = `Next player: ${play}`
                         } 
                         if (gr_board.checkDraw()) {
-                            key_listen()
+                            keyListen()
                             banner.textContent = draw_prompt
                             game_over = true
                         }
@@ -131,62 +140,14 @@ function Game() {
             reset()
         } else if (e.key.toLowerCase() == 'n'){
             banner.textContent = `${winner} WINS!`
+            // game_over = true
         }
         //  kinda kludgy but it works:
         if (gr_board.checkDraw() && e.key.toLowerCase() =='n'){  
             banner.textContent = "It's a draw!"
+            // game_over = true
         }
     }
-
-    // const loop = () => {
-    //     while (true) {
-    //         winner = board.checkWin()
-    //         if (winner) {  
-    //             reset_prompt = `${winner} WINS!!\n\nPlay again? (Y)es (N)o`
-    //             console.log(`${winner} WINS!!!`)
-    //             end_input = prompt(reset_prompt)
-
-    //             while (!reset_regex.test(end_input)) {
-    //                 end_input = prompt(reset_prompt)
-    //             }
-    //             if (end_input.toLowerCase() == 'y'){
-    //                 reset()
-    //             } else {
-    //                 break
-    //             }
-    //             // break
-    //         } else if (board.checkDraw()) {
-    //             console.log("IT'S A DRAW!")
-    //             end_input = prompt(draw_prompt)
-    //             while(!reset_regex.test(end_input)) {
-    //                 end_input = prompt(draw_prompt)
-    //             }
-    //             if (end_input.toLowerCase() == 'y') {
-    //                 reset()
-    //             } else {
-    //                 break
-    //             }
-    //         }
-
-    //         input = prompt(`${player} (${play}) Turn. \nEnter your move (row, column): `)
-    //         player = (play == 'X') ? 'player 2' : 'player 1'
-    
-    //         if (input_regex.test(input)) {
-    //             if (board.add(input, play)) {
-    //                 console.log('--------------')
-    //                 board.show()
-    //                 play = (play == 'X') ? 'O' : 'X'
-    //             } else {
-    //                 console.log('Invalid move. Please select an empty cell')
-    //                 player = (play == 'X') ? 'player 1' : 'player 2'
-    //             }
-                
-    //         } else {
-    //             player = (play == 'X') ? 'player 1' : 'player 2'
-    //             console.log('Invalid input format. Please enter in the format: row, column')
-    //         }
-    //     }
-    // }
 
     return { loop }
 }

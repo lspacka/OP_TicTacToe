@@ -17,7 +17,8 @@ DOM:
   + add each play to array
   + stop playing when prompted - propagation bug?
   + fix add2 bug
-  + fix weird bug with the volume control on the keyboard
+  + fix keyboard event listener bug
+  - the fix for the keys bug only works in the first round. fix
 
 CONSOLE: 
   + keep track of the current play ('X' or 'O')
