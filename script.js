@@ -68,7 +68,7 @@ function GameBoard(board) {
 }
 
 function Game() {
-    document.body.addEventListener('keydown', ResetPrompt)
+    const key_listen = () => document.body.addEventListener('keydown', ResetPrompt)
 
     const new_grBoard = Array(9).fill('') // for storing on screen moves 
     // const new_cBoard = Array(3).fill(null).map(() => Array(3).fill('-'))
@@ -103,6 +103,7 @@ function Game() {
                     if (gr_board.add2(square, play)) {
                         winner = checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
                         if (winner) {
+                            key_listen()
                             banner.textContent = `${winner} WINS! Play again? (Y)es (N)o` 
                             game_over = true
                         } else {
@@ -110,6 +111,7 @@ function Game() {
                             banner.textContent = `Next player: ${play}`
                         } 
                         if (gr_board.checkDraw()) {
+                            key_listen()
                             banner.textContent = draw_prompt
                             game_over = true
                         }
@@ -127,7 +129,7 @@ function Game() {
     function ResetPrompt(e) {
         if (e.key.toLowerCase()=='y') {
             reset()
-        } else {
+        } else if (e.key.toLowerCase() == 'n'){
             banner.textContent = `${winner} WINS!`
         }
         //  kinda kludgy but it works:
