@@ -42,7 +42,8 @@ h1 {
 .banner {
   align-self: center;
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  white-space: pre-line;
 }
 
 .board {
@@ -61,9 +62,9 @@ h1 {
 .square {
   display: grid;
   align-items: center;
-  width: 130px;
-  height: 130px;
+  width: 140px;
+  height: 140px;
   border: 1px solid;
-  font-size: 3.4rem;
+  font-size: 2.6rem;
   text-align: center;
 }

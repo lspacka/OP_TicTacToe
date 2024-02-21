@@ -3,7 +3,6 @@ document.body.addEventListener('mousedown', e => {
     e.preventDefault()
 })
 
-// const new_board = Array(3).fill(null).map(() => Array(3).fill('-'))
 const board = document.querySelectorAll('.square')
 const banner = document.querySelector('.banner')
 
@@ -77,23 +76,22 @@ function GameBoard(board) {
 
 function Game() {
     const new_grBoard = Array(9).fill('') // for storing the moves on the screen
+    // const new_cBoard = Array(3).fill(null).map(() => Array(3).fill('-'))
     let play = 'X'
     // let player1 = createPlayer('X')
     // let player2 = createPlayer('O')
     let gr_board = GameBoard(new_grBoard)
+    // let con_board = GameBoard(new_cBoard)
     let player = 'player 1'
-    let winner, input, end_input, reset_prompt
+    let winner, end_input
     let i = 0
-
-    // let input_regex = /^\s*[1-3]\s*,\s*[1-3]\s*$/
-    // let reset_regex = /^[ynYN]$/
-    // let draw_prompt = "IT'S A DRAW!!\n\nPlay again? (Y)es (N)o"
+    let draw_prompt = "IT'S A DRAW!!\n\nPlay again? (Y)es (N)o"
 
 
     const reset = () => {
         play = 'X'
         player = 'player 1'
-        // board = GameBoard(new_board)
+        gr_board = GameBoard(new_grBoard)
         console.clear()
     }
 
@@ -101,31 +99,19 @@ function Game() {
         winner = board.checkWin()
         console.log(winner)
         if (winner) {
-            console.log(`winner: ${winner}`)
-            banner.textContent = `${play} WINS`
+            banner.textContent = `${play} WINS! Play again? (Y)es (N)o`
+        } else {
+            play = (play == 'X') ? 'O' : 'X'
+            banner.textContent = `Next player: ${play}`
         }
     }
 
     const loop = () => {
         banner.textContent = `Next player: ${play}`
-        // if (winner) {
-        //     console.log(`winner: ${winner}`)
-        //     banner.textContent = `${play} WINS`
-        // }
-
         board.forEach(square => {
             square.addEventListener('click', () => {
                 gr_board.add2(square, play)
-                checkWinner(gr_board)
-                // winner = gr_board.checkWin()
-                // console.log(winner)
-                // if (winner) {
-                //     console.log(`winner: ${winner}`)
-                //     banner.textContent = `${play} WINS`
-                // }
-                // console.log(gr_board)
-                play = (play == 'X') ? 'O' : 'X'
-                banner.textContent = `Next player: ${play}`
+                checkWinner(gr_board) // maybe use this outside eventlistener to break inf loop?
             })
         })
         
