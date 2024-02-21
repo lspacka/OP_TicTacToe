@@ -26,6 +26,7 @@ function GameBoard(board) {
         if (square.textContent) return
         board2[square.id-1] = play
         square.textContent = play
+        return true
     }
 
     const checkWin = () => {
@@ -60,7 +61,7 @@ function GameBoard(board) {
 
     const checkDraw = () => {
         const flat = [].concat.apply([], board2)
-        return board2.every(square => square != '')
+        return flat.every(square => square != '')
     }
 
     return { add, add2, checkWin, checkDraw, show }
@@ -69,7 +70,7 @@ function GameBoard(board) {
 function Game() {
     document.body.addEventListener('keydown', ResetPrompt)
 
-    const new_grBoard = Array(9).fill('') // for storing the moves on the screen
+    const new_grBoard = Array(9).fill('') // for storing on screen moves 
     // const new_cBoard = Array(3).fill(null).map(() => Array(3).fill('-'))
     let play = 'X'
     // let player1 = createPlayer('X')
@@ -96,13 +97,13 @@ function Game() {
 
     const loop = () => {
         banner.textContent = `Next player: ${play}`
-            squares.forEach(square  => {
-                square.addEventListener('click', (e) => {
-                    if (!game_over) {
-                        gr_board.add2(square, play)
+        squares.forEach(square  => {
+            square.addEventListener('click', () => {
+                if (!game_over) {
+                    if (gr_board.add2(square, play)) {
                         winner = checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
                         if (winner) {
-                            banner.textContent = `${winner} WINS! Play again? (Y)es (N)o` // here
+                            banner.textContent = `${winner} WINS! Play again? (Y)es (N)o` 
                             game_over = true
                         } else {
                             play = (play == 'X') ? 'O' : 'X'
@@ -113,14 +114,14 @@ function Game() {
                             game_over = true
                         }
                     }
-                })
+                }
             })
+        })
     }
 
     function checkWinner(board) {
-        // refactor
         let winner = board.checkWin()
-        if (winner) return winner
+        return winner || null
     }
 
     function ResetPrompt(e) {
@@ -130,7 +131,7 @@ function Game() {
             banner.textContent = `${winner} WINS!`
         }
         //  kinda kludgy but it works:
-        if (gr_board.checkDraw() && e.key.toLowerCase() =='n'){  // here
+        if (gr_board.checkDraw() && e.key.toLowerCase() =='n'){  
             banner.textContent = "It's a draw!"
         }
     }
