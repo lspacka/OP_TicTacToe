@@ -4,6 +4,7 @@ GameState == obj
 
 - the ultimate challenge (apart from AI ofc) would be to keep both the console and the graphic games.
   that is, every move on the graphic board is reflected on the console. 
+  I can see a way to do it now, I could even encapsulate the thing on a ConsoleMirror()
 
 LOOP:
   1. prompt the player

@@ -1,6 +1,13 @@
+/* https://www.kreativekorp.com/software/fonts/apple2/ */
+
 @font-face {
   font-family: bbs;
-  src: url('BBSesque.ttf');
+  src: url('fonts/BBSesque.ttf');
+}
+
+@font-face {
+  font-family: apple2;
+  src: url('fonts/PrintChar21.ttf');
 }
 
 * {
@@ -15,9 +22,9 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-family: 'bbs';
+  font-family: 'apple2';
   background: black;
-  color:aqua;
+  color:rgb(13, 255, 0);
 }
 
 .container {
@@ -29,13 +36,13 @@ body {
 h1 {
   align-self: center;
   transform: translateY(-70px);
-  font-size: 3.5rem;
+  font-size: 2.2rem;
 }
 
 .banner {
   align-self: center;
   width: 100%;
-  font-size: 2rem;
+  font-size: 1.2rem;
 }
 
 .board {
@@ -57,6 +64,6 @@ h1 {
   width: 130px;
   height: 130px;
   border: 1px solid;
-  font-size: 4.5rem;
+  font-size: 3.4rem;
   text-align: center;
 }
