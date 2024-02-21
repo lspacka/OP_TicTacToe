@@ -15,6 +15,8 @@ LOOP:
 
 DOM:
   + add each play to array
+  + stop playing when prompted - propagation bug?
+  - fix add2 bug
 
 CONSOLE: 
   + keep track of the current play ('X' or 'O')

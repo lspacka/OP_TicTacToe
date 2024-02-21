@@ -76,9 +76,9 @@ function Game() {
     // let player2 = createPlayer('O')
     let gr_board = GameBoard(new_grBoard)
     // let con_board = GameBoard(new_cBoard)
-    let player = 'player 1'
-    let winner, end_input
-    let i = 0
+    // let player = 'player 1'
+    let winner
+    let game_over = false
     let draw_prompt = "It's a draw!\nPlay again? (Y)es (N)o"
 
     const reset = () => {
@@ -90,26 +90,31 @@ function Game() {
         player = 'player 1'
         gr_board = GameBoard(new_grBoard)
         banner.textContent = `Next player: ${play}`
+        game_over = false
         console.clear()
     }
 
     const loop = () => {
         banner.textContent = `Next player: ${play}`
-        squares.forEach(square => {
-            square.addEventListener('click', () => {
-                gr_board.add2(square, play)
-                winner = checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
-                if (winner) {
-                    banner.textContent = `${winner} WINS! Play again? (Y)es (N)o`
-                } else {
-                    play = (play == 'X') ? 'O' : 'X'
-                    banner.textContent = `Next player: ${play}`
-                } 
-                if (gr_board.checkDraw()) {
-                    banner.textContent = draw_prompt
-                }
+            squares.forEach(square  => {
+                square.addEventListener('click', (e) => {
+                    if (!game_over) {
+                        gr_board.add2(square, play)
+                        winner = checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
+                        if (winner) {
+                            banner.textContent = `${winner} WINS! Play again? (Y)es (N)o` // here
+                            game_over = true
+                        } else {
+                            play = (play == 'X') ? 'O' : 'X'
+                            banner.textContent = `Next player: ${play}`
+                        } 
+                        if (gr_board.checkDraw()) {
+                            banner.textContent = draw_prompt
+                            game_over = true
+                        }
+                    }
+                })
             })
-        })
     }
 
     function checkWinner(board) {
@@ -125,7 +130,7 @@ function Game() {
             banner.textContent = `${winner} WINS!`
         }
         //  kinda kludgy but it works:
-        if (gr_board.checkDraw() && e.key.toLowerCase() =='n'){
+        if (gr_board.checkDraw() && e.key.toLowerCase() =='n'){  // here
             banner.textContent = "It's a draw!"
         }
     }
