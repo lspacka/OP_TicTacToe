@@ -14,7 +14,7 @@ LOOP:
   5. else, place play on board. go back to 1
 
 DOM:
-  - add each play to array
+  + add each play to array
 
 CONSOLE: 
   + keep track of the current play ('X' or 'O')

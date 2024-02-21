@@ -113,14 +113,9 @@ function Game() {
     }
 
     function checkWinner(board) {
+        // refactor
         let winner = board.checkWin()
         if (winner) return winner
-        // if (winner) {
-        //     banner.textContent = `${winner} WINS! Play again? (Y)es (N)o`
-        // } else {
-        //     play = (play == 'X') ? 'O' : 'X'
-        //     banner.textContent = `Next player: ${play}`
-        // }
     }
 
     function ResetPrompt(e) {
@@ -128,6 +123,10 @@ function Game() {
             reset()
         } else {
             banner.textContent = `${winner} WINS!`
+        }
+        //  kinda kludgy but it works:
+        if (gr_board.checkDraw() && e.key.toLowerCase() =='n'){
+            banner.textContent = "It's a draw!"
         }
     }
 
