@@ -4,6 +4,7 @@ document.body.addEventListener('mousedown', e => {
 
 const squares = document.querySelectorAll('.square')
 const banner = document.querySelector('.banner')
+const banner0 = document.querySelector('.banner0')
 
 // function createPlayer (play) {
 //     const plays = () => play
@@ -14,15 +15,7 @@ const banner = document.querySelector('.banner')
 function GameBoard(board) {
     const board2 = JSON.parse(JSON.stringify(board))
 
-    const add = (input, play) => {
-        const [row, col] = input.split(',')
-        if (board2[row-1][col-1] == '-') {
-            board2[row-1][col-1] = play
-            return true
-        } 
-    }
-
-    const add2 = (square, play) => {
+    const add = (square, play) => {
         if (square.textContent) return
         board2[square.id-1] = play
         square.textContent = play
@@ -61,17 +54,17 @@ function GameBoard(board) {
 
     const checkDraw = () => {
         const flat = [].concat.apply([], board2)
+        if (checkWin()) return   // last edge case fix (check TODO)
         return flat.every(square => square != '')
     }
 
-    return { add, add2, checkWin, checkDraw, show }
+    return { add,  checkWin, checkDraw, show, board2 }
 }
 
 function Game() {
-    // const keyListen = () => document.body.addEventListener('keydown', ResetPrompt)
     let keyListener = null
     const keyListen = () => {
-        keyListener = (e) => ResetPrompt(e)
+        keyListener = (e) => handleResetKey(e)
         document.body.addEventListener('keydown', keyListener)
     }
 
@@ -81,8 +74,8 @@ function Game() {
     // let player1 = createPlayer('X')
     // let player2 = createPlayer('O')
     let gr_board = GameBoard(new_grBoard)
-    let con_board = GameBoard(new_cBoard)
-    let winner = null
+    let con_array, con_board
+    let winner
     let game_over = false
     let draw_prompt = "It's a draw!\nPlay again? (Y)es (N)o"
 
@@ -98,9 +91,10 @@ function Game() {
         
         play = 'X'
         gr_board = GameBoard(new_grBoard)
+        con_array = null
         banner.textContent = `Next player: ${play}`
+        banner0.textContent = ''
         game_over = false
-        // winner = null
         console.clear()
     }
 
@@ -109,8 +103,18 @@ function Game() {
         squares.forEach(square  => {
             square.addEventListener('click', () => {
                 if (!game_over) {
-                    if (gr_board.add2(square, play)) {
+                    if (gr_board.add(square, play)) {
+                        //  console mirror thingy
+                        con_array = passTo2d(gr_board.board2, new_cBoard)
+                        con_board = GameBoard(con_array)
+                        con_board.show()
+
                         winner = checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
+                        // if (gr_board.checkDraw()) {
+                        //     keyListen()
+                        //     banner.textContent = draw_prompt
+                        //     game_over = true
+                        // }
                         if (winner) {
                             keyListen() 
                             game_over = true
@@ -118,7 +122,8 @@ function Game() {
                         } else {
                             play = (play == 'X') ? 'O' : 'X'
                             banner.textContent = `Next player: ${play}`
-                        } 
+                        }
+                         
                         if (gr_board.checkDraw()) {
                             keyListen()
                             banner.textContent = draw_prompt
@@ -135,18 +140,37 @@ function Game() {
         return winner || null
     }
 
-    function ResetPrompt(e) {
+    function handleResetKey(e) {
         if (e.key.toLowerCase()=='y') {
             reset()
-        } else if (e.key.toLowerCase() == 'n'){
+        } else if (winner && e.key.toLowerCase() == 'n'){
             banner.textContent = `${winner} WINS!`
-            // game_over = true
+            banner0.textContent = "\\[T]/"
+            console.log(`${winner} WINS!! PRAISE THE SUN HIJUEPUTA!!!`)
         }
         //  kinda kludgy but it works:
         if (gr_board.checkDraw() && e.key.toLowerCase() =='n'){  
             banner.textContent = "It's a draw!"
-            // game_over = true
+            banner0.textContent = ''
         }
+    }
+
+    function passTo2d(arr, bdArr) {
+        const board2 = JSON.parse(JSON.stringify(bdArr))
+        let new_arr = []
+        // copy arr into a '-' filled new_arr
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] == '') new_arr[i] = '-'
+            else new_arr[i] = arr[i]
+        }
+
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                board2[i][j] = new_arr[i * 3 + j]
+            }
+        }
+
+        return board2
     }
 
     return { loop }

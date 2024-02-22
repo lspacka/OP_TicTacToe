@@ -47,11 +47,13 @@ h1 {
   white-space: pre-line;
 }
 
-.banner2 {
+.banner0 {
+  margin-top: 15px;
   align-self: center;
   width: 100%;
-  font-size: 1rem;
+  font-size: 0.7rem;
   white-space: pre-line;
+  text-align: center;
 }
 
 .board {

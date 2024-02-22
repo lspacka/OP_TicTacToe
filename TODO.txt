@@ -4,7 +4,7 @@ GameState == obj
 
 - the ultimate challenge (apart from AI ofc) would be to keep both the console and the graphic games.
   that is, every move on the graphic board is reflected on the console. 
-  I can see a way to do it now, I could even encapsulate the thing on one ConsoleMirror()
+  I can see a way to do this now, maybe I could encapsulate the thing on one ConsoleMirror()...
 
 LOOP:
   1. prompt the player
@@ -18,7 +18,9 @@ DOM:
   + stop playing when prompted - propagation bug?
   + fix add2 bug
   + fix keyboard event listener bug
-  - the fix for the keys bug only works in the first round. fix
+  + the fix for the keys bug only works in the first round. fix
+  - (last edge case) fix weird bug where, if the very last move forms a winning line, 
+    the banner shows a draw, but the console shows the correct msg
 
 CONSOLE: 
   + keep track of the current play ('X' or 'O')
