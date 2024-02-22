@@ -110,11 +110,6 @@ function Game() {
                         con_board.show()
 
                         winner = checkWinner(gr_board)  // maybe use this outside eventlistener to break inf loop?
-                        // if (gr_board.checkDraw()) {
-                        //     keyListen()
-                        //     banner.textContent = draw_prompt
-                        //     game_over = true
-                        // }
                         if (winner) {
                             keyListen() 
                             game_over = true
